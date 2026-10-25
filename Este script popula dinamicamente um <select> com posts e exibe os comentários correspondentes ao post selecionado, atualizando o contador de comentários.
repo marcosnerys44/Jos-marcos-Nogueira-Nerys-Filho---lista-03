@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Questão 04 - Comentários por Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        select {
+            padding: 8px;
+        }
+        .comentario {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Comentários por Post</h1>
+    
+    <label for="post">Selecione um post:</label><br>
+    <select id="post">
+        <option value="">Selecione um post</option>
+    </select>
+
+    <h2 id="tituloComentarios">Comentários (0)</h2>
+    <div id="listaComentarios"></div>
+
+    <script>
+        const posts = [
+            { id: 1, title: "Introdução ao DOM" },
+            { id: 2, title: "Eventos em JavaScript" },
+            { id: 3, title: "O que é uma API?" }
+        ];
+
+        const comentarios = [
+            { postId: 1, id: 1, name: "Ana", email: "ana@email.com", body: "Explicação muito clara!" },
+            { postId: 1, id: 2, name: "Bruno", email: "bruno@email.com", body: "Gostei do exemplo do getElementById." },
+            { postId: 2, id: 3, name: "Carla", email: "carla@email.com", body: "addEventListener é bem melhor que onclick." },
+            { postId: 3, id: 4, name: "Diego", email: "diego@email.com", body: "A analogia do garçom ajudou muito." },
+            { postId: 3, id: 5, name: "Elisa", email: "elisa@email.com", body: "Quero testar o JSONPlaceholder!" },
+            { postId: 3, id: 6, name: "Fábio", email: "fabio@email.com", body: "E o método POST, como funciona?" }
+        ];
+
+        const selectPost = document.getElementById("post");
+        const tituloComentarios = document.getElementById("tituloComentarios");
+        const listaComentarios = document.getElementById("listaComentarios");
+
+        // Preenche o select com os posts do array
+        posts.forEach(p => {
+            const option = document.createElement("option");
+            option.value = p.id;
+            option.textContent = p.title;
+            selectPost.appendChild(option);
+        });
+
+        // Evento de mudança (change) no select
+        selectPost.addEventListener("change", () => {
+            const postIdSelecionado = Number(selectPost.value);
+            listaComentarios.innerHTML = "";
+
+            if (!postIdSelecionado) {
+                tituloComentarios.textContent = "Comentários (0)";
+                return;
+            }
+
+            // Filtra os comentários do post selecionado
+            const comentariosFiltrados = comentarios.filter(c => c.postId === postIdSelecionado);
+
+            tituloComentarios.textContent = `Comentários (${comentariosFiltrados.length})`;
+
+            comentariosFiltrados.forEach(c => {
+                const divComentario = document.createElement("div");
+                divComentario.classList.add("comentario");
+                divComentario.innerHTML = `
+                    <h3>${c.name}</h3>
+                    <p><strong>E-mail:</strong> ${c.email}</p>
+                    <p>${c.body}</p>
+                `;
+                listaComentarios.appendChild(divComentario);
+            });
+        });
+    </script>
+</body>
+</html>
